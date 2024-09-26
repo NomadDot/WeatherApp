@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">PettersonWeatherApp</string>
+    <string name="label_navigation_home">Home</string>
+
+    <string name="min_temp">Min: %s</string>
+    <string name="max_temp">Max: %s</string>
+    <string name="label_search">Search</string>
+    <string name="label_nothing_found">Nothing found</string>
+    <string name="location_permission_dialog_description">Please, grant the fine location permission to show your local weather</string>
+    <string name="location_permission_dialog_title">Fine location Permission</string>
+    <string name="dialog_button_ok">OK</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="button_enable_gps">Enable GPS</string>
+    <string name="warning_gps_turn_on">You should enable GPS in your settings to get current Weather</string>
+    <string name="warning_grant_permission">You should grant fine location permission to check local weather</string>
+    <string name="button_grant_permission">Grant permission</string>
+    <string name="button_refresh_current_location">Refresh current location</string>
+    <string name="toast_grant_permission">Please, grant the location permission</string>
+    <string name="button_try_again">Try again</string>
+    <string name="warning_try_again_location">Can\'t get your current location. Please, try again</string>
+    <string name="error_something_wrong">Something went wrong. Try later.</string>
+</resources>

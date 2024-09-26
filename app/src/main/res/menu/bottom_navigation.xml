@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dashboard"
+        android:icon="@drawable/ic_dashboard_map"
+        android:title="@string/label_navigation_home"/>
+
+    <item
+        android:id="@+id/saved"
+        android:icon="@drawable/ic_navigation_list"
+        android:title="Saved locations" />
+</menu>
