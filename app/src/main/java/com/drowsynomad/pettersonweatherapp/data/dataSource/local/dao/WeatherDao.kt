@@ -1,7 +1,6 @@
 package com.drowsynomad.pettersonweatherapp.data.dataSource.local.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -20,6 +19,9 @@ interface WeatherDao {
 
     @Insert(entity = WeatherEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveWeather(weatherEntity: WeatherEntity)
+
+    @Query("SELECT COUNT(*) FROM location WHERE place_name = :place")
+    suspend fun isLocationSaved(place: String): Boolean
 
     @Query("SELECT * from location ORDER BY place_name ASC")
     suspend fun loadSavedLocations(): List<LocationEntity>

@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.drowsynomad.pettersonweatherapp"
-        minSdk = 23
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -67,5 +68,5 @@ dependencies {
     implementation(libs.room.runtime)
 
     implementation(libs.play.services.location)
-    implementation("com.google.android.libraries.places:places:4.0.0")
+    implementation(libs.places)
 }

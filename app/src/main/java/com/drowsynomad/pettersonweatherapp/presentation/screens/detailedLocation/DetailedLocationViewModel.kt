@@ -6,7 +6,9 @@ import com.drowsynomad.pettersonweatherapp.data.repository.ILocationWeatherRepos
 import com.drowsynomad.pettersonweatherapp.presentation.screens.detailedLocation.model.DetailedLocationEvent
 import com.drowsynomad.pettersonweatherapp.presentation.screens.detailedLocation.model.DetailedLocationState
 import com.drowsynomad.pettersonweatherapp.presentation.screens.detailedLocation.model.DetailedLocationState.Loading
+import com.drowsynomad.pettersonweatherapp.utils.formatTemperature
 import com.drowsynomad.pettersonweatherapp.utils.network.IConnectionStatusProvider
+import kotlinx.coroutines.CoroutineExceptionHandler
 
 /**
  * @author Roman Voloshyn (Created on 26.09.2024)
@@ -28,6 +30,9 @@ class DetailedLocationViewModel(
 
     private fun loadLocationWeather(place: String) {
         launch(
+            exceptionHandler = CoroutineExceptionHandler { _, _ ->
+                DetailedLocationState.Error
+            },
             action = {
                 val network = networkStatusProvider.isNetworkEnabled()
                 val data = weatherRepository
@@ -37,17 +42,19 @@ class DetailedLocationViewModel(
                         place = place
                     )
 
+                val isSaved = weatherRepository.isLocationSaved(data)
+
                 updateState {
                     DetailedLocationState.Success(
                         locationWeather = with(data) {
                             copy(
                                 city = city,
-                                currentTemp = "${currentTemp}°",
-                                minTemp = "${minTemp}°",
-                                maxTemp = "${maxTemp}°",
+                                currentTemp = currentTemp.formatTemperature(),
+                                minTemp = minTemp.formatTemperature(),
+                                maxTemp = maxTemp.formatTemperature(),
                             )
                         },
-                        isLocationSaved = data.isActualData
+                        isLocationSaved = !data.isActualData || isSaved
                     )
                 }
             })

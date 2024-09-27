@@ -17,4 +17,6 @@ sealed class DetailedLocationState: UiState {
         val isLocationSaved: Boolean,
         val locationWeather: LocationWeather
     ): DetailedLocationState()
+
+    data object Error: DetailedLocationState()
 }

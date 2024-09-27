@@ -8,6 +8,7 @@ import com.drowsynomad.pettersonweatherapp.data.repository.ILocationWeatherRepos
 import com.drowsynomad.pettersonweatherapp.presentation.screens.home.model.HomeEvent
 import com.drowsynomad.pettersonweatherapp.presentation.screens.home.model.HomeState
 import com.drowsynomad.pettersonweatherapp.presentation.screens.home.model.HomeState.Loading
+import com.drowsynomad.pettersonweatherapp.utils.formatTemperature
 import com.drowsynomad.pettersonweatherapp.utils.network.IConnectionStatusProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 
@@ -24,7 +25,7 @@ class HomeViewModel(
     override fun handleEvent(uiEvent: HomeEvent) {
         when (uiEvent) {
             is HomeEvent.LoadCurrentWeather -> loadLocationWeather(uiEvent.place)
-            is HomeEvent.FindLocationWeather -> loadLocationWeather(uiEvent.place)
+            is HomeEvent.FindLocationWeather -> checkIfLocationExists(uiEvent.place)
             HomeEvent.CantGetLocation -> updateState { HomeState.LocationError }
             HomeEvent.PermissionDenied -> updateState { HomeState.PermissionNotGranted }
             HomeEvent.Loading -> updateState { Loading }
@@ -35,10 +36,10 @@ class HomeViewModel(
     private fun loadLocationWeather(place: String) {
         launch(
             exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-                when(throwable) {
+                when (throwable) {
                     is RemoteServiceException -> updateState { HomeState.Error }
-                    is LocalServiceException -> updateState { HomeState.Error }
-                    else -> Log.e("$coroutineContext", "${throwable.message}")
+                    is LocalServiceException -> updateState { HomeState.ErrorNoRecordsFound }
+                    else -> Log.e("suspend$coroutineContext", "${throwable.message}")
                 }
             },
             action = {
@@ -51,13 +52,27 @@ class HomeViewModel(
                         locationWeather = with(data) {
                             copy(
                                 city = city,
-                                currentTemp = "${currentTemp}°",
-                                minTemp = "${minTemp}°",
-                                maxTemp = "${maxTemp}°",
+                                currentTemp = currentTemp.formatTemperature(),
+                                minTemp = minTemp.formatTemperature(),
+                                maxTemp = maxTemp.formatTemperature(),
+                                feelsLikeTemp = feelsLikeTemp.formatTemperature()
                             )
                         }
                     )
                 }
+            })
+    }
+
+    private fun checkIfLocationExists(place: String) {
+        launch(
+            exceptionHandler = CoroutineExceptionHandler { _, _ ->
+                updateState { HomeState.SearchLocationNotFound }
+            },
+            action = {
+                val data = weatherRepository
+                    .loadWeatherByPlace(isNetworkEnabled = true, autoSave = false, place = place)
+
+                updateState { HomeState.SearchLocationFound(data.city) }
             })
     }
 }

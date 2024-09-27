@@ -11,13 +11,6 @@ import retrofit2.http.Query
 
 interface WeatherService {
     @GET("data/2.5/weather")
-    suspend fun fetchWeatherByLatLon(
-        @Query("lat") latitude: Double,
-        @Query("lon") longitude: Double,
-        @Query("units") units: String = Constants.celsius
-    ): WeatherResponse?
-
-    @GET("data/2.5/weather")
     suspend fun fetchWeatherByCityName(
         @Query("q") city: String,
         @Query("units") units: String = Constants.celsius

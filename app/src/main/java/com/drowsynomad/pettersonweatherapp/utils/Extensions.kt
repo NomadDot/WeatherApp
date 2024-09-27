@@ -4,10 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
-
+import coil.ImageLoader
+import coil.load
+import com.drowsynomad.pettersonweatherapp.data.dataSource.remote.Constants
 
 /**
  * @author Roman Voloshyn (Created on 25.09.2024)
@@ -16,14 +17,6 @@ import androidx.fragment.app.Fragment
 fun View.visibility(isVisible: Boolean) = this.apply {
     if (isVisible) this.visibility = View.VISIBLE
     else this.visibility = View.GONE
-}
-
-fun AppCompatEditText.onDone(action: (String) -> Unit) {
-    this.setOnEditorActionListener { _, actionId, _ ->
-        if (actionId == EditorInfo.IME_ACTION_DONE)
-            action.invoke(this.text.toString())
-        true
-    }
 }
 
 fun Fragment.openGpsSettings() {
@@ -40,4 +33,16 @@ fun Fragment.openPermissionSettings() {
     startActivity(intent)
 }
 
+fun AppCompatImageView.loadImage(url: String, imageLoader: ImageLoader) {
+    this.load("${Constants.BASE_IMAGE_URL}${url}@2x.png", imageLoader) {
+        crossfade(true)
+    }
+}
 
+fun String.clearTemperature(): String =
+    if(this.last() == '°') this.dropLast(1)
+    else this
+
+fun String.formatTemperature() = "$this°"
+
+fun String.round() = substringBefore(".")

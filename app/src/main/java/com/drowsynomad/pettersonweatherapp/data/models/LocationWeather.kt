@@ -10,7 +10,9 @@ data class LocationWeather(
     val currentTemp: String = "",
     val minTemp: String = "",
     val maxTemp: String = "",
+    val feelsLikeTemp: String = "",
     val weatherTitle: String = "",
+    val icon: String = "",
     val isActualData: Boolean = true
 )
 

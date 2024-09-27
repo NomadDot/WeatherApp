@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_surface"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.fragment.app.FragmentContainerView
@@ -16,8 +17,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary"
-        app:itemTextColor="@color/textPrimary"
-        app:itemIconTint="@color/textPrimary"
+        app:itemTextColor="@color/navigation_button"
+        app:itemIconTint="@color/white"
+        app:itemActiveIndicatorStyle="@style/App.Custom.Indicator"
         app:menu="@menu/bottom_navigation"
         app:layout_constraintBottom_toBottomOf="parent" />
 

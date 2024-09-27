@@ -2,8 +2,6 @@ package com.drowsynomad.pettersonweatherapp.presentation.screens.savedLocaitons
 
 import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.drowsynomad.pettersonweatherapp.R
 import com.drowsynomad.pettersonweatherapp.core.base.BaseFragment
 import com.drowsynomad.pettersonweatherapp.databinding.FragmentSavedLocationsBinding
@@ -38,10 +36,6 @@ class SavedLocationsFragment :
         )
     }
 
-    private val divider by lazy {
-        DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL)
-    }
-
     override fun onStart() {
         super.onStart()
         viewModel.handleEvent(SavedLocationEvent.LoadSavedLocations)
@@ -50,7 +44,6 @@ class SavedLocationsFragment :
     override fun initUI(state: LiveData<SavedLocationState>) {
         with(binding) {
             rvLocations.adapter = locationAdapter
-            rvLocations.addItemDecoration(divider)
 
             state.observe {
                 progress.visibility(false)

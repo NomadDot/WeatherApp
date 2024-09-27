@@ -19,4 +19,13 @@
     <string name="button_try_again">Try again</string>
     <string name="warning_try_again_location">Can\'t get your current location. Please, try again</string>
     <string name="error_something_wrong">Something went wrong. Try later.</string>
+    <string name="label_current_location">Current location\n\n%s</string>
+    <string name="label_not_actual_data">Not actual weather data</string>
+    <string name="label_location_not_found">Location not found</string>
+    <string name="warning_no_records">Nothing found in local storage. Please, connect to the internet and try again.</string>
+    <string name="button_get_current_weather">Get current weather</string>
+    <string name="label_actual_data">Actual weather data</string>
+    <string name="label_feels_like_s">Feels like: %s</string>
+    <string name="button_remove">Remove</string>
+    <string name="button_save">Save</string>
 </resources>

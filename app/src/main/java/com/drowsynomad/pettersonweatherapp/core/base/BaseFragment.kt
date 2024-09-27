@@ -1,16 +1,16 @@
 package com.drowsynomad.pettersonweatherapp.core.base
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
 import com.drowsynomad.pettersonweatherapp.R
 import com.drowsynomad.pettersonweatherapp.core.common.UiState
-import com.drowsynomad.pettersonweatherapp.presentation.screens.main.MainNavigation
 import org.koin.androidx.fragment.android.replace
 
 /**
@@ -49,7 +49,7 @@ abstract class BaseFragment<S : UiState, V : ViewBinding, VM : BaseViewModel<S, 
             .navigateTo(screen)
     }
 
-    protected fun popBackStack(screen: Fragment) {
+    protected fun popBackStack() {
         (requireActivity() as BaseNavigationActivity)
             .popBackStack()
     }
@@ -59,4 +59,10 @@ abstract class BaseFragment<S : UiState, V : ViewBinding, VM : BaseViewModel<S, 
             .replace<F>(R.id.fragmentContainer)
             .commit()
     }
+
+    protected fun showToast(@StringRes message: Int) =
+        Toast.makeText(
+            requireContext(),
+            getString(message), Toast.LENGTH_SHORT
+        ).show()
 }

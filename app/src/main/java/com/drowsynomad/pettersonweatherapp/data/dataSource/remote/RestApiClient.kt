@@ -26,7 +26,7 @@ class RestApiClient : ApiClient {
         if (retrofit == null) {
             val okHttpClient = createHttpClient()
             retrofit = Retrofit.Builder()
-                .baseUrl(Constants.baseUrl)
+                .baseUrl(Constants.BASE_URL)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -55,7 +55,7 @@ class RestApiClient : ApiClient {
             .addInterceptor { chain ->
                 val url = chain.request()
                     .url.newBuilder()
-                    .addQueryParameter(Constants.AppId, Constants.apiKey)
+                    .addQueryParameter(Constants.AppId, Constants.WEATHER_API_KEY)
                     .build()
 
                 val finalRequest = chain

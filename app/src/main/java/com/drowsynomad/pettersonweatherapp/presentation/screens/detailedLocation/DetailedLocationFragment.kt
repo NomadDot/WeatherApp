@@ -2,13 +2,16 @@ package com.drowsynomad.pettersonweatherapp.presentation.screens.detailedLocatio
 
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
+import coil.ImageLoader
 import com.drowsynomad.pettersonweatherapp.R
 import com.drowsynomad.pettersonweatherapp.core.base.BaseFragment
 import com.drowsynomad.pettersonweatherapp.data.models.LocationWeather
 import com.drowsynomad.pettersonweatherapp.databinding.FragmentDetailedLocationBinding
 import com.drowsynomad.pettersonweatherapp.presentation.screens.detailedLocation.model.DetailedLocationEvent
 import com.drowsynomad.pettersonweatherapp.presentation.screens.detailedLocation.model.DetailedLocationState
+import com.drowsynomad.pettersonweatherapp.utils.loadImage
 import com.drowsynomad.pettersonweatherapp.utils.visibility
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 /**
@@ -30,6 +33,8 @@ class DetailedLocationFragment :
 
     override fun prepareViewModel(): DetailedLocationViewModel = getViewModel()
 
+    private val imageLoader: ImageLoader by inject()
+
     private val place by lazy {
         arguments?.getString(KEY_PLACE_ID) ?: ""
     }
@@ -40,20 +45,30 @@ class DetailedLocationFragment :
     }
 
     override fun initUI(state: LiveData<DetailedLocationState>) {
+        binding.ibBack.setOnClickListener { popBackStack() }
         state.observe {
             with(binding) {
                 progress.visibility(false)
 
-                when(it) {
+                when (it) {
                     DetailedLocationState.Loading -> progress.visibility(true)
                     is DetailedLocationState.Success -> {
                         progress.visibility(false)
+                        tvWarning.visibility(true)
 
                         tvCity.text = it.locationWeather.city
                         tvCurrentTemp.text = it.locationWeather.currentTemp
                         tvMaxTemp.text =
                             getString(R.string.max_temp, "${it.locationWeather.maxTemp} / ")
                         tvMinTemp.text = getString(R.string.min_temp, it.locationWeather.minTemp)
+                        tvWeatherTitle.text = it.locationWeather.weatherTitle
+                        tvFeelsLike.text =
+                            getString(R.string.label_feels_like_s, it.locationWeather.feelsLikeTemp)
+                        tvWarning.text =
+                            if (it.locationWeather.isActualData) getString(R.string.label_actual_data)
+                            else getString(R.string.label_not_actual_data)
+
+                        ivWeatherIcon.loadImage(it.locationWeather.icon, imageLoader)
 
                         updateActionButton(it.isLocationSaved, it.locationWeather)
                     }
@@ -61,6 +76,8 @@ class DetailedLocationFragment :
                     is DetailedLocationState.ActionButtonChanged -> {
                         updateActionButton(it.isLocationSaved, it.locationWeather)
                     }
+
+                    DetailedLocationState.Error -> showToast(R.string.error_something_wrong)
                 }
             }
         }
@@ -68,12 +85,15 @@ class DetailedLocationFragment :
 
     private fun updateActionButton(
         isLocationSaved: Boolean,
-        locationWeather: LocationWeather
+        locationWeather: LocationWeather,
     ) {
-        binding.actionButton.text = if(isLocationSaved) "Remove" else "Save"
+        binding.actionButton.text =
+            if (isLocationSaved) getString(R.string.button_remove)
+            else getString(R.string.button_save)
+
         binding.actionButton.setOnClickListener {
             viewModel.handleEvent(
-                if(isLocationSaved) DetailedLocationEvent.RemoveLocation(locationWeather)
+                if (isLocationSaved) DetailedLocationEvent.RemoveLocation(locationWeather)
                 else DetailedLocationEvent.SaveLocation(locationWeather)
             )
         }

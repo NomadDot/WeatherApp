@@ -10,6 +10,11 @@ class MainActivity : BaseNavigationActivity() {
 
     override fun navigateTo(screen: Fragment) {
         supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.anim_fragment_horizontal_enter,
+                R.anim.anim_fragment_horizontal_exit,
+                R.anim.anim_fragment_horizontal_pop_enter,
+                R.anim.anim_fragment_horizontal_pop_exit,)
             .replace(R.id.rootContainer, screen)
             .addToBackStack(screen::class.simpleName)
             .commit()

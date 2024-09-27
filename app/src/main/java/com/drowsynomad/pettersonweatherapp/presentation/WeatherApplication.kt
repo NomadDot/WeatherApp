@@ -24,7 +24,7 @@ class WeatherApplication: Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Places.initializeWithNewPlacesApiEnabled(this, Constants.placeApiKey)
+        Places.initialize(this, Constants.PLACE_API_KEY)
         RestApiClient.instance.init()
 
         startKoin {

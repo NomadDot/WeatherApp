@@ -4,6 +4,7 @@ import com.drowsynomad.pettersonweatherapp.core.common.Dispatcher
 import com.drowsynomad.pettersonweatherapp.data.dataSource.local.dao.WeatherDao
 import com.drowsynomad.pettersonweatherapp.data.dataSource.local.entities.LocationEntity
 import com.drowsynomad.pettersonweatherapp.data.dataSource.local.errors.LocalServiceException
+import com.drowsynomad.pettersonweatherapp.data.dataSource.remote.Constants.NotFoundCode
 import com.drowsynomad.pettersonweatherapp.data.dataSource.remote.models.errors.RemoteServiceException
 import com.drowsynomad.pettersonweatherapp.data.dataSource.remote.service.WeatherService
 import com.drowsynomad.pettersonweatherapp.data.models.Location
@@ -26,6 +27,7 @@ interface ILocationWeatherRepository {
 
     suspend fun loadLocations(): List<Location>
 
+    suspend fun isLocationSaved(weatherData: LocationWeather): Boolean
     suspend fun removeLocation(weatherData: LocationWeather)
     suspend fun saveLocation(weatherData: LocationWeather)
 }
@@ -44,6 +46,7 @@ class LocationWeatherRepository(
         withContext(dispatcher.pool) {
             if (isNetworkEnabled) {
                 val remoteData = weatherService.fetchWeatherByCityName(place)
+                if(remoteData?.statusCode == NotFoundCode) throw RemoteServiceException()
                 val weatherData = remoteData?.toWeatherMainData() ?: throw RemoteServiceException()
 
                 if(autoSave)
@@ -59,6 +62,11 @@ class LocationWeatherRepository(
     override suspend fun loadLocations(): List<Location> =
         withContext(dispatcher.pool) {
             weatherDao.loadSavedLocations().map(LocationEntity::toLocation)
+        }
+
+    override suspend fun isLocationSaved(weatherData: LocationWeather) =
+        withContext(dispatcher.pool) {
+            weatherDao.isLocationSaved(weatherData.city)
         }
 
     override suspend fun removeLocation(weatherData: LocationWeather) =

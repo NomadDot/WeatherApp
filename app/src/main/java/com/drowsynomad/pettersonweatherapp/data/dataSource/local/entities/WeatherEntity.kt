@@ -27,8 +27,10 @@ data class WeatherEntity(
     val id: Int = 0,
     @ColumnInfo(name = "place_id")
     val placeId: Int = 0,
-    @Embedded(prefix = "temperature")
+    @Embedded(prefix = "temperature_")
     val temperature: Temperature,
+    @Embedded(prefix = "weather_")
+    val info: Weather,
 ) {
     data class Temperature(
         @ColumnInfo(name = "current")
@@ -37,5 +39,12 @@ data class WeatherEntity(
         val min: Double = 0.0,
         @ColumnInfo(name = "max")
         val max: Double = 0.0,
+        @ColumnInfo(name = "feels_like")
+        val feelsLike: Double = 0.0
+    )
+
+    data class Weather(
+        val title: String,
+        val icon: String
     )
 }

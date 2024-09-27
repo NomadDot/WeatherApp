@@ -1,9 +1,8 @@
 package com.drowsynomad.pettersonweatherapp.data.dataSource.remote.models.response
 
-
 import com.google.gson.annotations.SerializedName
 
-data class Sys(
+data class SystemInfo(
     @SerializedName("country")
     val country: String?,
     @SerializedName("id")

@@ -1,6 +1,5 @@
 package com.drowsynomad.pettersonweatherapp.presentation.screens.dashboard
 
-import android.os.Bundle
 import androidx.lifecycle.LiveData
 import com.drowsynomad.pettersonweatherapp.core.base.BaseFragment
 import com.drowsynomad.pettersonweatherapp.databinding.FragmentDashboardBinding

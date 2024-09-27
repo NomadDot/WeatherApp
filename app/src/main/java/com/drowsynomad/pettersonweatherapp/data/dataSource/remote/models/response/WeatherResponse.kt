@@ -3,32 +3,17 @@ package com.drowsynomad.pettersonweatherapp.data.dataSource.remote.models.respon
 import com.google.gson.annotations.SerializedName
 
 data class WeatherResponse(
-    @SerializedName("base")
-    val base: String?,
-    @SerializedName("clouds")
-    val clouds: Clouds?,
-    @SerializedName("cod")
-    val cod: Int?,
-    @SerializedName("coord")
-    val coord: Coord?,
-    @SerializedName("dt")
-    val dt: Int?,
     @SerializedName("id")
-    val id: Int?,
+    val id: Int?, @SerializedName("cod")
+    val statusCode: Int?,
+    @SerializedName("dt")
+    val dateTime: Int?,
     @SerializedName("main")
     val main: Main?,
     @SerializedName("name")
-    val name: String?,
-    @SerializedName("rain")
-    val rain: Rain?,
+    val cityName: String?,
     @SerializedName("sys")
-    val sys: Sys?,
-    @SerializedName("timezone")
-    val timezone: Int?,
-    @SerializedName("visibility")
-    val visibility: Int?,
+    val cityInfo: SystemInfo?,
     @SerializedName("weather")
     val weather: List<Weather?>?,
-    @SerializedName("wind")
-    val wind: Wind?
 )
